@@ -32,13 +32,13 @@ public class GameSession {
     private void registerThePlayersOfThisGameSession() {
         if (!checkIfThisGameSessionReachedTheMaxLimitOfPlayers()) {
             for (int i = 0; i < MAX_PLAYERS; i++) {
-                addNewPlayerToThisGameSession();
+                addNewPlayerToThisGameSession(i+1);
             }
         }
     }
 
-    public void addNewPlayerToThisGameSession() {
-        Player player = new Player();
+    private void addNewPlayerToThisGameSession(int numberOfThePlayer) {
+        Player player = new Player(numberOfThePlayer);
         playersOfThisGameSession.add(player);
         gameSessionLogger.logNewPlayerAdded(player);
     }
