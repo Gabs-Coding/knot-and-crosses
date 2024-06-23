@@ -1,10 +1,18 @@
 package com.gabscoding.knotsandcrosses.model;
 
-public class Player {
-    private String theNameOfThePlayer;
+import com.gabscoding.knotsandcrosses.log.PlayerLogger;
+import com.gabscoding.knotsandcrosses.registration.PlayerRegistration;
 
-    public Player(String theNameOfThePlayer) {
-        this.theNameOfThePlayer = theNameOfThePlayer;
+public class Player {
+    private final PlayerLogger playerLogger;
+    private String theNameOfThePlayer;
+    private Boolean isTheWinningPlayer;
+
+    public Player() {
+        theNameOfThePlayer = PlayerRegistration.getNameOfPlayerFromUser();
+        isTheWinningPlayer = false;
+        playerLogger = PlayerLogger.getInstance();
+        playerLogger.logNewPlayerRegistered(this);
     }
 
     public String getTheNameOfThePlayer() {
@@ -15,8 +23,16 @@ public class Player {
         this.theNameOfThePlayer = theNameOfThePlayer;
     }
 
+    public Boolean getIsTheWinningPlayer() {
+        return isTheWinningPlayer;
+    }
+
+    public void setIsTheWinningPlayer(Boolean isTheWinningPlayer) {
+        this.isTheWinningPlayer = isTheWinningPlayer;
+    }
+
     @Override
     public String toString() {
-        return "Jogador: " + getTheNameOfThePlayer();
+        return "Jogador " + getTheNameOfThePlayer();
     }
 }
