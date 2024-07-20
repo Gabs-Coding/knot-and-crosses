@@ -6,12 +6,10 @@ import com.gabscoding.knotsandcrosses.registration.GameSessionRegistration;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class GameSession {
     private final String nameOfTheGameSession;
     private final GameSessionLogger gameSessionLogger;
-    private final GameSessionLogFile gameSessionLogFile;
     private final List<Player> playersOfThisGameSession;
     private static final int MAX_PLAYERS = 2;
     private final Grid grid;
@@ -23,7 +21,7 @@ public class GameSession {
         grid = new Grid();
         gameSessionLogger = GameSessionLogger.getInstance();
         registerThePlayersOfThisGameSession();
-        gameSessionLogFile = new GameSessionLogFile(nameOfTheGameSession);
+        new GameSessionLogFile(nameOfTheGameSession);
         gameMenu = new GameMenu();
         gameSessionLogger.logNewGameSessionLog(this);
     }
