@@ -71,6 +71,7 @@ public class GameSession {
                 grid.showGrid();
                 turnOf(playerOnTheMove);
                 if (isThePlayerWinned()) {
+                    playerOnTheMove.setIsTheWinningPlayer(true);
                     playerWinnedEndGameMessage(playerOnTheMove);
                     return;
                 }
