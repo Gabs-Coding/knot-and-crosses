@@ -11,17 +11,20 @@ import java.util.Scanner;
 public class GameSession {
     private final String nameOfTheGameSession;
     private final GameSessionLogger gameSessionLogger;
-    private final List<Player> playersOfThisGameSession;
-    private final Integer MAX_PLAYERS = 2;
-    private Grid grid;
     private final GameSessionLogFile gameSessionLogFile;
+    private final List<Player> playersOfThisGameSession;
+    private static final int MAX_PLAYERS = 2;
+    private final Grid grid;
+    private final GameMenu gameMenu;
 
     public GameSession() {
         nameOfTheGameSession = GameSessionRegistration.createTheNameOfTheGameSession();
         playersOfThisGameSession = new ArrayList<>();
+        grid = new Grid();
+        gameSessionLogger = GameSessionLogger.getInstance();
         registerThePlayersOfThisGameSession();
         gameSessionLogFile = new GameSessionLogFile(nameOfTheGameSession);
-        gameSessionLogger = GameSessionLogger.getInstance();
+        gameMenu = new GameMenu();
         gameSessionLogger.logNewGameSessionLog(this);
     }
 
@@ -32,7 +35,7 @@ public class GameSession {
     private void registerThePlayersOfThisGameSession() {
         if (!checkIfThisGameSessionReachedTheMaxLimitOfPlayers()) {
             for (int i = 0; i < MAX_PLAYERS; i++) {
-                addNewPlayerToThisGameSession(i+1);
+                addNewPlayerToThisGameSession(i + 1);
             }
         }
     }
@@ -46,34 +49,52 @@ public class GameSession {
     private boolean checkIfThisGameSessionReachedTheMaxLimitOfPlayers() {
         return playersOfThisGameSession.size() >= MAX_PLAYERS;
     }
-    
+
     private boolean hasThisGameSessionRegisteredPlayers() {
         return !playersOfThisGameSession.isEmpty();
     }
-    
-    public void renamePlayerName() {
-        try (Scanner scanner = new Scanner(System.in)) {
-            if (!hasThisGameSessionRegisteredPlayers()) {
-                return;
-            }
-            listPlayersOfThisSession();
-            System.out.print("Digite o número do jogador a ser renomeado (1 ou 2): ");
-            int indexOfPlayerToBeRenamed = scanner.nextInt();
-            System.out.print("\nDigite o novo nome: ");
-            String newNameOfThePlayer = scanner.next();
-            playersOfThisGameSession.get(indexOfPlayerToBeRenamed).setTheNameOfThePlayer(newNameOfThePlayer);
-        }
-    }
-    
+
     public void listPlayersOfThisSession() {
-        if (hasThisGameSessionRegisteredPlayers()) {
+        if (!hasThisGameSessionRegisteredPlayers()) {
             System.out.println("Impossível listar jogadores, pois esta sessão não possui nenhum jogador cadastrado.");
             return;
         }
-        System.out.print("Jogadores registrados nessa sessão: ");
+        System.out.print("Jogadores registrados nesta sessão: ");
         for (Player currentPlayer : playersOfThisGameSession) {
-            System.out.print("{" + currentPlayer.getTheNameOfThePlayer() + "}" + " ");
+            System.out.print("{" + currentPlayer.getTheNameOfThePlayer() + "} ");
         }
+        System.out.println();
+    }
+
+    public void letsPlay() {
+        gameMenu.showMainMenu();
+        while (hasConditionsToPlay()) {
+            for (Player playerOnTheMove : playersOfThisGameSession) {
+                grid.showGrid();
+                turnOf(playerOnTheMove);
+                if (isThePlayerWinned()) {
+                    playerWinnedEndGameMessage(playerOnTheMove);
+                    return;
+                }
+            }
+        }
+    }
+
+    private boolean hasConditionsToPlay() {
+        return !grid.getHasWinningSequenceMarked() && !grid.isTheGridFull();
+    }
+
+    private void turnOf(Player player) {
+        grid.makeMove(player, GetPlayerInput.getPositionToMove());
+    }
+
+    private boolean isThePlayerWinned() {
+        return grid.getHasWinningSequenceMarked();
+    }
+
+    private void playerWinnedEndGameMessage(Player player) {
+        String winningMessage = "O vencedor da partida é " + player.toString() + "! Foi um ótimo jogo.";
+        System.out.println(winningMessage);
     }
 
     @Override
