@@ -4,15 +4,20 @@ import com.gabscoding.knotsandcrosses.log.PlayerLogger;
 import com.gabscoding.knotsandcrosses.registration.PlayerRegistration;
 
 public class Player {
-    private final PlayerLogger playerLogger;
     private String theNameOfThePlayer;
     private Boolean isTheWinningPlayer;
+    private final char symbolOfThePlayer;
 
-    public Player() {
+    public Player(int numberOfThePlayer) {
         theNameOfThePlayer = PlayerRegistration.getNameOfPlayerFromUser();
         isTheWinningPlayer = false;
-        playerLogger = PlayerLogger.getInstance();
+        symbolOfThePlayer = (numberOfThePlayer == 0) ? 'X' : 'O';
+        PlayerLogger playerLogger = PlayerLogger.getInstance();
         playerLogger.logNewPlayerRegistered(this);
+    }
+
+    public char getSymbolOfThePlayer() {
+        return symbolOfThePlayer;
     }
 
     public String getTheNameOfThePlayer() {
