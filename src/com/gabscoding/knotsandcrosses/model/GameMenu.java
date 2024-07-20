@@ -8,7 +8,7 @@ public class GameMenu {
     public enum GameMenuParts {
         HEADER, OPTIONS
     }
-    private Map<GameMenuParts, String> gameMenuContent;
+    private final Map<GameMenuParts, String> gameMenuContent;
 
     public GameMenu() {
         GameMenuDirector director = new GameMenuDirector();
@@ -22,13 +22,8 @@ public class GameMenu {
 
     public void showMainMenu() {
         ClearConsole.clearConsole();
-        for (String gameMenuElement : gameMenuContent.values()){
+        for (String gameMenuElement : gameMenuContent.values()) {
             System.out.println(gameMenuElement);
         }
-    }
-
-    private int getTheInputForMenuFromTheUser() {
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextInt();
     }
 }
