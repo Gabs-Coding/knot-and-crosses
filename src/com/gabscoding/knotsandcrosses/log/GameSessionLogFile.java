@@ -2,7 +2,6 @@ package com.gabscoding.knotsandcrosses.log;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,10 +16,6 @@ public class GameSessionLogFile {
     public GameSessionLogFile(String nameOfTheGameSession) {
         this.gameSessionLogFilePath = LOG_FILE_PATH;
         this.gameSessionLogFile = tryCreateTheLogFile(nameOfTheGameSession);
-    }
-
-    public File getGameSessionLogFile() {
-        return gameSessionLogFile;
     }
 
     private File tryCreateTheLogFile(String nameOfTheGameSession) {
