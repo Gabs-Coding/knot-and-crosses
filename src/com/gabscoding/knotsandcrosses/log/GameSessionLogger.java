@@ -10,12 +10,15 @@ public class GameSessionLogger {
     private static GameSessionLogger gameSessionLogger;
     private final Logger logger;
 
-    public GameSessionLogger() {
+    private GameSessionLogger() {
         logger = Logger.getLogger(GameSession.class.getName());
     }
 
-    public static GameSessionLogger getInstance() {
-        return gameSessionLogger == null ? gameSessionLogger = new GameSessionLogger() : gameSessionLogger;
+    public static synchronized GameSessionLogger getInstance() {
+        if (gameSessionLogger == null) {
+            gameSessionLogger = new GameSessionLogger();
+        }
+        return gameSessionLogger;
     }
 
     public void logNewGameSessionLog(GameSession gameSession) {
@@ -28,5 +31,9 @@ public class GameSessionLogger {
 
     public void logErrorWhileOpeningTheGameSessionLogFile() {
         logger.log(Level.SEVERE, "Impossível abrir o arquivo, ou o diretório, do GameSessionLogFile.");
+    }
+
+    public void logEndGame() {
+        logger.log(Level.INFO, "Um dos jogadores venceu. Fim de jogo.");
     }
 }
